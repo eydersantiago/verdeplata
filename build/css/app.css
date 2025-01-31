@@ -835,3 +835,34 @@ h4 {
 }
 
 /*# sourceMappingURL=app.css.map */
+
+
+.mapa-previsualizacion {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border: 2px solid #4CAF50; /* Color verde para resaltar */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.mapa-previsualizacion:hover {
+    transform: scale(1.05);
+}
+
+.mapa-container {
+    width: 100%;
+    max-width: 1200px; /* Ajusta según tus necesidades */
+    margin: 0 auto; /* Centra el mapa */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra opcional para darle profundidad */
+    border-radius: 8px; /* Bordes redondeados */
+    overflow: hidden; /* Asegura que el iframe respete los bordes redondeados */
+}
+
+.mapa-container iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 450px; /* Altura mínima para dispositivos pequeños */
+}
+
