@@ -51,19 +51,4 @@
         </div>
     </section>
 
-    <footer class="footer seccion">
-        <div class="contenedor contenedor-footer">
-            <nav class="navegacion">
-                <a href="nosotros.php">Nosotros</a>
-                <a href="articulos.php">Articulos</a>
-                <a href="ubicanos.php">Ubícanos</a>
-                <a href="contacto.php">Contacto</a>
-            </nav>
-        </div>
-
-        <p class="copyright">Todos los derechos Reservados 2025 &copy;</p>
-    </footer>
-
-    <script src="build/js/bundle.min.js"></script>
-</body>
-</html>
+    <?php include 'includes/templates/footer.php'; ?>
