@@ -541,7 +541,7 @@ h4 {
     color: #020202;
     background-color: rgba(218, 104, 12, 0.78);
     border: none;
-    border-radius: 0.5rem; /* Bordes redondeados */
+    border-radius: 0.6rem; /* Bordes redondeados */
     text-decoration: none;
     font-size: 2.2rem;
     display: block;
