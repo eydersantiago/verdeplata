@@ -11,7 +11,7 @@
     <!-- Incluir Font Awesome para los íconos SOLO en index -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <?php endif; ?>
-  <link rel="stylesheet" href="build/css/app.css">
+  <link rel="stylesheet" href="/build/css/app.css">
 </head>
 <body>
   <!-- Se agrega la clase "inicio" al header si $inicio es true -->
@@ -19,17 +19,17 @@
     <div class="contenedor contenido-header">
       <div class="barra">
         <a href="/">
-          <img src="build/img/logo_verdeplata_filled.svg" alt="Logotipo de verdeplata">
+          <img src="/build/img/logo_verdeplata_filled.svg" alt="Logotipo de verdeplata">
         </a>
 
         <div class="mobile-menu">
-          <img src="build/img/barras.svg" alt="Icono menú responsive">
+          <img src="/build/img/barras.svg" alt="Icono menú responsive">
         </div>
 
         <div class="derecha">
           <!-- Botón de Modo Oscuro Mejorado -->
           <button class="boton-dark-mode" aria-label="Alternar modo oscuro">
-            <img class="dark-mode-boton" src="build/img/dark-mode.svg" alt="Botón modo oscuro">
+            <img class="dark-mode-boton" src="/build/img/dark-mode.svg" alt="Botón modo oscuro">
           </button>
           <nav class="navegacion">
             <!-- Enlaces de navegación: se muestran los íconos solo si $inicio es true -->
