@@ -99,7 +99,7 @@
             move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen );
  
 
-            $query = "INSERT INTO articulos (titulo, precio, imagen, descripcion, creado, vendedor_id) VALUES ('$titulo', '$precio', '$nombreImagen','$descripcion', '$creado', '$vendedorId')";
+            $query = "INSERT INTO articulos (titulo, precio, imagen, descripcion, tipo, creado, vendedor_id) VALUES ('$titulo', '$precio', '$nombreImagen','$descripcion', '$tipo', '$creado', '$vendedorId')";
 
             //echo $query;
 
