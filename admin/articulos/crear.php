@@ -21,14 +21,18 @@
    // Ejecutar el código después de que el usuario envia el formulario
    if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // echo "<pre>";
-    // var_dump($_POST);
-    // echo "</pre>";
+        // echo "<pre>";
+        // var_dump($_POST);
+        // echo "</pre>";
+
 
         echo "<pre>";
-        var_dump($_POST);
+        var_dump($_FILES);
         echo "</pre>";
 
+        //exit; //esto es para que no se ejecute el código de abajo
+
+        //usando mysqli_real_escape_string para evitar inyecciones sql "sanitizar"
         $titulo = mysqli_real_escape_string( $db,  $_POST['titulo'] );
         $precio = mysqli_real_escape_string( $db,  $_POST['precio'] );
         $descripcion = mysqli_real_escape_string( $db,  $_POST['descripcion'] );
@@ -36,8 +40,8 @@
         $vendedorId = mysqli_real_escape_string( $db,  $_POST['vendedor'] );
         $creado = date('Y/m/d');
 
-        // // Asignar files hacia una variable
-        // $imagen = $_FILES['imagen'];
+        // Asignar files hacia una variable
+        $imagen = $_FILES['imagen'];
 
 
         //validando los datos
@@ -57,17 +61,17 @@
             $errores[] = 'Elige un vendedor';
         }
 
-        // if(!$imagen['name'] || $imagen['error'] ) {
-        //     $errores[] = 'La Imagen es Obligatoria';
-        // }
+        if(!$imagen['name'] || $imagen['error'] ) {
+            $errores[] = 'La Imagen es Obligatoria';
+        }
 
-        // // Validar por tamaño (1mb máximo)
-        // $medida = 1000 * 1000;
+        // Validar por tamaño (1mb máximo)
+        $medida = 1000 * 1000;
 
 
-        // if($imagen['size'] > $medida ) {
-        //     $errores[] = 'La Imagen es muy pesada';
-        // }
+        if($imagen['size'] > $medida ) {
+            $errores[] = 'La Imagen es muy pesada';
+        }
 
         if(!$tipo) {
             $errores[] = "Añade a qué tipo de artículo pertenece";
@@ -94,8 +98,8 @@
             // Subir la imagen
             move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen );
  
-            //insertar en la base de datos  [falta imagen]
-            $query = "INSERT INTO articulos (titulo, precio, descripcion, creado, vendedor_id) VALUES ('$titulo', '$precio','$descripcion', '$creado', '$vendedorId')";
+
+            $query = "INSERT INTO articulos (titulo, precio, imagen, descripcion, creado, vendedor_id) VALUES ('$titulo', '$precio', '$nombreImagen','$descripcion', '$creado', '$vendedorId')";
 
             //echo $query;
 
@@ -126,13 +130,13 @@
         <?php endforeach; ?>
 
 
-        
+        <!--enctype="multipart/form-data" es para que el formulario pueda subir archivos-->
         <form class="formulario" method="POST" action="/admin/articulos/crear.php" enctype="multipart/form-data">
             <fieldset>
                 <legend>Información General</legend>
 
-                <label for="titulo">Título:</label>
-                <input type="text" id="titulo" name="titulo" placeholder="Titulo del Artículo" value="<?php echo $titulo; ?>">
+                <label for="titulo">Título:</label> 
+                <input type="text" id="titulo" name="titulo" placeholder="Titulo del Artículo" value="<?php echo $titulo; ?>"> <!-- el value sirve para que no se borren los datos al haber un error -->
 
                 <label for="precio">Precio:</label>
                 <input type="number" id="precio" name="precio" placeholder="Precio del Articulo" value="<?php echo $precio; ?>">
