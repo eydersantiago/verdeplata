@@ -38,9 +38,9 @@
     // Ejecutar el código después de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        // echo "<pre>";
-        // var_dump($_POST);
-        // echo "</pre>";
+        echo "<pre>";
+        var_dump($_POST);
+        echo "</pre>";
 
         // echo "<pre>";
         // var_dump($_FILES);
@@ -103,21 +103,21 @@
             $nombreImagen = '';
 
             /** SUBIDA DE ARCHIVOS */
-
+            //falta que se elimine la imagen previa anterior cuando se suba una nueva
             if($imagen['name']) {
                 // Eliminar la imagen previa
-
                 unlink($carpetaImagenes . $propiedad['imagen']);
-
-                // // Generar un nombre único
+            
+                // Generar un nombre único y subir la imagen
                 $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg";
-
-                // // Subir la imagen
                 move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen );
+                
+                // Actualiza la variable para que el preview muestre la imagen nueva
+                $imagenPropiedad = $nombreImagen;
             } else {
                 $nombreImagen = $propiedad['imagen'];
             }
-
+            
             // Insertar en la base de datos
             $query = " UPDATE articulos SET titulo = '{$titulo}', precio = '{$precio}', imagen = '{$nombreImagen}', descripcion = '{$descripcion}', tipo = '{$tipo}', vendedor_id = {$vendedorId} WHERE id = {$id} ";
 
@@ -129,12 +129,7 @@
             }
         }
 
-   
-
-
     }
-
-
 
     incluirTemplate('header');
 ?>
@@ -189,7 +184,7 @@
                 </select>
             </fieldset>
 
-            <input type="submit" value="Actualizar Propiedad" class="boton boton-verde">
+            <input type="submit" value="Actualizar Artículo" class="boton boton-verde">
         </form>
         
     </main>
