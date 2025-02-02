@@ -74,19 +74,38 @@
         }
 
 
-        //insertar en la base de datos  [falta imagen]
-        $query = "INSERT INTO articulos (titulo, precio, descripcion, creado, vendedor_id) VALUES ('$titulo', '$precio','$descripcion', '$creado', '$vendedorId')";
 
-        //echo $query;
+        // Revisar que el arreglo de errores esté vacío
+        if(empty($errores)) {
 
-        $resultado = mysqli_query($db, $query); //con esto la consulta se ejecuta en la base de datos
+            /** SUBIDA DE ARCHIVOS */
 
-        if($resultado) {
-            echo "Insertado Correctamente";
-            // Redireccionar al usuario.
-            //header('Location: /admin?resultado=1');
+            // Crear carpeta
+            $carpetaImagenes = '../../imagenes/';
+
+            if(!is_dir($carpetaImagenes)) {
+                mkdir($carpetaImagenes);
+            }
+
+            // Generar un nombre único
+            $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg";
+
+
+            // Subir la imagen
+            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen );
+ 
+            //insertar en la base de datos  [falta imagen]
+            $query = "INSERT INTO articulos (titulo, precio, descripcion, creado, vendedor_id) VALUES ('$titulo', '$precio','$descripcion', '$creado', '$vendedorId')";
+
+            //echo $query;
+
+            $resultado = mysqli_query($db, $query); //con esto la consulta se ejecuta en la base de datos
+
+            if($resultado) {
+                // Redireccionar al usuario.
+                header('Location: /admin?resultado=1');
+            }
         }
-    
 
     }
     
@@ -99,6 +118,7 @@
 
         <a href="/admin" class="boton boton-verde">Regresar</a>
 
+        <!-- //si hay 7 mensajes de error, se mostrarán -->
         <?php foreach($errores as $error): ?>
         <div class="alerta error">
             <?php echo $error; ?>
