@@ -633,24 +633,49 @@ h4 {
     .contenedor-anuncios {
         display: grid;
         gap: 2rem;
-        grid-template-columns: repeat(3, 1fr)
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Opcional: ajusta el tamaño mínimo */
     }
+    .contenido-anuncio {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 2rem;
+    }
+    
+    .contenido-inferior {
+        margin-top: auto; /* Empuja el precio y el botón al fondo */
+    }
+    
 }
+
 
 .anuncio {
     background-color: #eee;
     border: 1px solid #c8c8c8;
-    margin-bottom: 2rem
+    /* Para asegurar que todas las tarjetas tengan la misma altura */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
+
 .anuncio .contenido-anuncio {
-    padding: 2rem
+    flex: 1; /* Permite que el contenido tome el espacio restante */
+    padding: 2rem;
 }
+
 
 .anuncio h3,
 .anuncio p {
     margin: 0
 }
+
+.anuncio img {
+    width: 100%;
+    height: 300px; /* Altura fija para todas las imágenes */
+    object-fit: cover; /* Recorta la imagen para que se ajuste al contenedor */
+}
+
 
 .precio {
     color: #71b100;

@@ -26,7 +26,7 @@
     </main>
 
     <section class="seccion contenedor">
-        <h2>Casas y Depas en Venta</h2>
+        <h2>Artículos destacados</h2>
 
         <?php
             $limite = 3;
