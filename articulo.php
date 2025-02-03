@@ -1,82 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienes Raices</title>
-    <link rel="stylesheet" href="build/css/app.css">
-</head>
-<body>
-    
-    <header class="header">
-        <div class="contenedor contenido-header">
-            <div class="barra">
-                <a href="/">
-                    <img src="build/img/logo.svg" alt="Logotipo de Bienes Raices">
-                </a>
-                <div class="mobile-menu">
-                    <img src="build/img/barras.svg" alt="icono menu responsive">
-                </div>
+<?php
+    //importar la conexión
+    require 'includes/config/database.php';
+    $db = conectarDB();
 
-                <div class="derecha">
-                    <img class="dark-mode-boton" src="build/img/dark-mode.svg">
-                    <nav class="navegacion">
-                        <a href="nosotros.php">Nosotros</a>
-                        <a href="anuncios.php">Anuncios</a>
-                        <a href="blog.php">Blog</a>
-                        <a href="contacto.php">Contacto</a>
-                    </nav>
-                </div>
-                
-            </div> <!--.barra-->
-        </div>
-    </header>
+    //obtener el id
+    $id = $_GET['id'];
+    $id = filter_var($id, FILTER_VALIDATE_INT);
+
+    if(!$id) {
+        header('Location: /');
+    }
+
+    //consultar para obtener los datos del articulo
+    $query = "SELECT * FROM articulos WHERE id = {$id}";
+
+
+    //obtener resultados
+    $resultado = mysqli_query($db, $query);
+    $articulo = mysqli_fetch_assoc($resultado);
+
+    //si el id no existe
+    if($resultado->num_rows === 0) {
+        header('Location: /');
+    }
+
+    //esto es un tipo de -console.log- en php
+    echo "<pre>";
+    var_dump($query);
+    echo "</pre>";
+
+    require 'includes/funciones.php';
+    incluirTemplate('header');
+
+?>
 
     <main class="contenedor seccion contenido-centrado">
-        <h1>Casa en Venta frente al bosque</h1>
 
-        <picture>
-            <source srcset="build/img/destacada.webp" type="image/webp">
-            <source srcset="build/img/destacada.jpg" type="image/jpeg">
-            <img loading="lazy" src="build/img/destacada.jpg" alt="imagen de la propiedad">
-        </picture>
+        <a href="#" class="boton boton-verde" onclick="window.history.back(); return false;">Regresar</a>
+
+
+        <h1><?php echo $articulo['titulo'];?></h1>
+
+        <img loading="lazy" src="/imagenes/<?php echo $articulo['imagen'] ?>" alt="anuncio">
 
         <div class="resumen-propiedad">
-            <p class="precio">$3,000,000</p>
-            <ul class="iconos-caracteristicas">
-                <li>
-                    <img class="icono" loading="lazy" src="build/img/icono_wc.svg" alt="icono wc">
-                    <p>3</p>
-                </li>
-                <li>
-                    <img class="icono" loading="lazy" src="build/img/icono_estacionamiento.svg" alt="icono estacionamiento">
-                    <p>3</p>
-                </li>
-                <li>
-                    <img class="icono"  loading="lazy" src="build/img/icono_dormitorio.svg" alt="icono habitaciones">
-                    <p>4</p>
-                </li>
-            </ul>
+            <p class="precio">$<?php echo $articulo['precio']?></p>
+            <p><?php echo $articulo['descripcion']?></p>
 
-            <p>Proin consequat viverra sapien, malesuada tempor tortor feugiat vitae. In dictum felis et nunc aliquet molestie. Proin tristique commodo felis, sed auctor elit auctor pulvinar. Nunc porta, nibh quis convallis sollicitudin, arcu nisl semper mi, vitae sagittis lorem dolor non risus. Vivamus accumsan maximus est, eu mollis mi. Proin id nisl vel odio semper hendrerit. Nunc porta in justo finibus tempor. Suspendisse lobortis dolor quis elit suscipit molestie. Sed condimentum, erat at tempor finibus, urna nisi fermentum est, a dignissim nisi libero vel est. Donec et imperdiet augue. Curabitur malesuada sodales congue. Suspendisse potenti. Ut sit amet convallis nisi.</p>
+            <p>El tipo de artículo es: <?php echo $articulo['tipo']?></p>
 
-            <p>Aliquam lectus magna, luctus vel gravida nec, iaculis ut augue. Praesent ac enim lorem. Quisque ac dignissim sem, non condimentum orci. Morbi a iaculis neque, ac euismod felis. Fusce augue quam, fermentum sed turpis nec, hendrerit dapibus ante. Cras mattis laoreet nibh, quis tincidunt odio fermentum vel. Nulla facilisi.</p>
-        </div>
+
     </main>
 
-    <footer class="footer seccion">
-        <div class="contenedor contenedor-footer">
-            <nav class="navegacion">
-                <a href="nosotros.php">Nosotros</a>
-                <a href="anuncios.php">Anuncios</a>
-                <a href="blog.php">Blog</a>
-                <a href="contacto.php">Contacto</a>
-            </nav>
-        </div>
+<?php
+    //cerrar la conexión
+    mysqli_close($db);
 
-        <p class="copyright">Todos los derechos Reservados 2021 &copy;</p>
-    </footer>
-
-    <script src="build/js/bundle.min.js"></script>
-</body>
-</html>
+    incluirTemplate('footer');
+?>

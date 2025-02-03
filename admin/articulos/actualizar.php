@@ -65,7 +65,7 @@
             $errores[] = 'El Precio es Obligatorio';
         }
 
-        if( strlen( $descripcion ) < 50 ) {
+        if( strlen( $descripcion ) < 30 ) {
             $errores[] = 'La descripción es obligatoria y debe tener al menos 50 caracteres';
         }
 
