@@ -1,0 +1,17 @@
+{
+    "name": "eyder/verdeplata_frontend",
+    "description": "Creando un proyecto con POO",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Eyder Santiago Suarez Chavez",
+            "email": "eyder.suarez@correounivalle.edu.co"
+        }
+    ],
+    "require": {},
+    "autoload":{
+        "psr-4":{
+            "App\\":"./classes" 
+        }
+    }
+}

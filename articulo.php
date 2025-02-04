@@ -1,6 +1,6 @@
 <?php
     //importar la conexión
-    require 'includes/config/database.php';
+
     $db = conectarDB();
 
     //obtener el id
@@ -10,6 +10,8 @@
     if(!$id) {
         header('Location: /');
     }
+
+    require 'includes/app.php';
 
     //consultar para obtener los datos del articulo
     $query = "SELECT * FROM articulos WHERE id = {$id}";
@@ -29,7 +31,7 @@
     var_dump($query);
     echo "</pre>";
 
-    require 'includes/funciones.php';
+
     incluirTemplate('header');
 
 ?>
