@@ -2,6 +2,20 @@
     //incluyendo la base de datos
     require '../../includes/config/database.php';
 
+
+    require '../../includes/funciones.php';
+
+    //accediendo a la variable de sesión del arreglo session
+    $auth = estaAutenticado();
+
+    //limitar el acceso a ciertas páginas si no está autenticado
+    if(!$auth) {
+        header('Location: /');
+    }
+
+
+
+
     $db = conectarDB();
 
     // Consultar para obtener los vendedores
@@ -113,7 +127,6 @@
 
     }
     
-    require '../../includes/funciones.php';
     incluirTemplate('header');
 ?>
 

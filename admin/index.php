@@ -1,11 +1,22 @@
 <?php 
-    echo "<pre>";   
-    var_dump($_GET);
-    echo "</pre>";
+
+    require '../includes/funciones.php';
+
+    //accediendo a la variable de sesión del arreglo session
+    $auth = estaAutenticado();
+
+    //limitar el acceso a ciertas páginas si no está autenticado
+    if(!$auth) {
+        header('Location: /');
+    }
+
+    // echo "<pre>";   
+    // var_dump($_SESSION);
+    // echo "</pre>";
 
     // Importar la conexión
     require '../includes/config/database.php';
-    require '../includes/funciones.php';
+
     $db = conectarDB();
 
     // Escribir el Query

@@ -3,6 +3,18 @@
     require '../../includes/funciones.php';
 
 
+
+    //accediendo a la variable de sesión del arreglo session
+    $auth = estaAutenticado();
+
+    //limitar el acceso a ciertas páginas si no está autenticado
+    if(!$auth) {
+        header('Location: /');
+    }
+
+    
+
+
     // Validar la URL por ID válido
     $id = $_GET['id'];
     $id = filter_var($id, FILTER_VALIDATE_INT);

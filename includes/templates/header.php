@@ -1,5 +1,14 @@
 <?php
 // header.php
+  
+
+  if(!isset($_SESSION['usuario'])) {
+    session_start();
+  }
+
+  $auth = $_SESSION['login'] ?? false;
+
+  // var_dump($auth);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +66,11 @@
               <?php endif; ?>
               Contacto
             </a>
+            <?php if ($auth): ?>
+              <a href="cerrar-sesion.php">
+                <i class="fas fa-sign-out-alt"></i> logout
+              </a>
+            <?php endif; ?>
           </nav>
         </div>
       </div> <!-- .barra -->
@@ -64,7 +78,7 @@
       <?php if (isset($inicio) && $inicio): ?>
       <!-- Contenido extra solo para la página de inicio -->
       <div class="header-extra">
-        <h1>Bienvenido a Verdeplata</h1>
+        <h1>Bienvenido a Verdeplata Naturaleza y vida</h1>
         <!-- Puedes agregar aquí una imagen de fondo u otro contenido exclusivo para index -->
         <!-- Ejemplo: <img src="build/img/imagen_fondo.jpg" alt="Imagen de fondo"> -->
       </div>
