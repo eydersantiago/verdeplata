@@ -1,11 +1,9 @@
 <?php
     //importar la conexión
 
-    $db = conectarDB();
-
-    //obtener el id
     $id = $_GET['id'];
     $id = filter_var($id, FILTER_VALIDATE_INT);
+
 
     if(!$id) {
         header('Location: /');
@@ -13,18 +11,23 @@
 
     require 'includes/app.php';
 
+    $db = conectarDB();
+
     //consultar para obtener los datos del articulo
     $query = "SELECT * FROM articulos WHERE id = {$id}";
 
 
     //obtener resultados
     $resultado = mysqli_query($db, $query);
-    $articulo = mysqli_fetch_assoc($resultado);
+
 
     //si el id no existe
-    if($resultado->num_rows === 0) {
+    if(!$resultado->num_rows) {
         header('Location: /');
-    }
+    } 
+    
+    $articulo = mysqli_fetch_assoc($resultado);
+
 
     //esto es un tipo de -console.log- en php
     echo "<pre>";
