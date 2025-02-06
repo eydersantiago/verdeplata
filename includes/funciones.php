@@ -10,13 +10,62 @@ function incluirTemplate(string $nombre, bool $inicio = false) {
 }
 
 // comprueba si el usuario esta autenticado
-function estaAutenticado() : bool {
+function estaAutenticado() {
     session_start();
 
-    $auth = $_SESSION['login'];
-
-    if($auth) {
-        return true;
+    if(!$_SESSION['login']) {
+        header('Location: /');
     }
-    return false;
 }
+
+
+function debuguear($variable) {
+    echo "<pre>";
+    var_dump($variable);
+    echo "</pre>";
+    exit;
+}
+
+// Escapa / Sanitizar el HTML
+function s($html) : string {
+    $s = htmlspecialchars($html);
+    return $s;
+}
+
+
+// Valida tipo de petición
+function validarTipoContenido($tipo){
+    $tipos = ['vendedor', 'articulo'];
+    return in_array($tipo, $tipos);
+}
+
+// Muestra los mensajes
+function mostrarNotificacion($codigo) {
+    $mensaje = '';
+
+    switch ($codigo) {
+        case 1:
+            $mensaje = 'Artículo Creada Correctamente';
+            break;
+        case 2:
+            $mensaje = 'Artículo Actualizada Correctamente';
+            break;
+        case 3:
+            $mensaje = 'Artículo Eliminada Correctamente';
+            break;
+        case 4:
+            $mensaje = 'Vendedor Registrado Correctamente';
+            break;
+        case 5:
+            $mensaje = 'Vendedor Actualizado Correctamente';
+            break;
+        case 6:
+            $mensaje = 'Vendedor Eliminado Correctamente';
+            break;
+        default:
+            $mensaje = false;
+            break;
+    }
+    return $mensaje;
+}
+

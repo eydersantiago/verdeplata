@@ -6,7 +6,7 @@ class Articulo extends ActiveRecord {
 
     // Base DE DATOS
     protected static $tabla = 'articulos';
-    protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'tipo', 'creado', 'vendedorId'];
+    protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'tipo', 'creado', 'vendedor_id'];
 
 
     public $id;
@@ -16,8 +16,9 @@ class Articulo extends ActiveRecord {
     public $descripcion;
     public $tipo;
     public $creado;
-    public $vendedorId;
+    public $vendedor_id;
 
+    //asignar los atributos
     public function __construct($args = [])
     {
         $this->id = $args['id'] ?? null;
@@ -27,7 +28,7 @@ class Articulo extends ActiveRecord {
         $this->descripcion = $args['descripcion'] ?? '';
         $this->tipo = $args['tipo'] ?? '';
         $this->creado = date('Y/m/d');
-        $this->vendedorId = $args['vendedorId'] ?? '';
+        $this->vendedor_id = $args['vendedor_id'] ?? '';
     }
 
     public function validar() {
@@ -48,7 +49,7 @@ class Articulo extends ActiveRecord {
             self::$errores[] = 'El Tipo de Artículo es obligatorio';
         }
         
-        if(!$this->vendedorId) {
+        if(!$this->vendedor_id) {
             self::$errores[] = 'Elige un vendedor';
         }
 

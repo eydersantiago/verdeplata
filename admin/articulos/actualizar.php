@@ -1,19 +1,20 @@
 <?php 
 
-    require '../../includes/funciones.php';
+    require '../../includes/app.php';
+    use App\Articulo;
+    use App\Vendedor;
 
+    // Importar Intervention Image
+    use Intervention\Image\ImageManagerStatic as Image;
 
 
     //accediendo a la variable de sesión del arreglo session
-    $auth = estaAutenticado();
+    estaAutenticado();
 
-    //limitar el acceso a ciertas páginas si no está autenticado
-    if(!$auth) {
-        header('Location: /');
-    }
-
-    
-
+    // //limitar el acceso a ciertas páginas si no está autenticado
+    // if(!$auth) {
+    //     header('Location: /');
+    // }
 
     // Validar la URL por ID válido
     $id = $_GET['id'];
@@ -23,133 +24,55 @@
         header('Location: /admin');
     }
 
-    // Base de datos
-    require '../../includes/config/database.php';
-    $db = conectarDB();
+    // // Base de datos
+    // require '../../includes/config/database.php';
+    // $db = conectarDB();
 
-    // Obtener los datos de la propiedad
-    $consulta = "SELECT * FROM articulos WHERE id = {$id}";
-    $resultado = mysqli_query($db, $consulta);
-    $propiedad = mysqli_fetch_assoc($resultado);
-
+    // Obtener los datos de los artículos
+    $articulo = Articulo::find($id);
 
     // Consultar para obtener los vendedores
-    $consulta = "SELECT * FROM vendedores";
-    $resultado = mysqli_query($db, $consulta);
+    $vendedores = Vendedor::all();
 
     // Arreglo con mensajes de errores
-    $errores = [];
-
-    $titulo = $propiedad['titulo'];
-    $precio = $propiedad['precio'];
-    $descripcion = $propiedad['descripcion'];
-    $tipo = $propiedad['tipo'];
-    $vendedorId = $propiedad['vendedor_id'];
-    $imagenPropiedad = $propiedad['imagen'];
+    $errores = Articulo::getErrores();
 
     // Ejecutar el código después de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        echo "<pre>";
-        var_dump($_POST);
-        echo "</pre>";
+        //Asignar los atributos
 
-        // echo "<pre>";
-        // var_dump($_FILES);
-        // echo "</pre>";
+        $args = $_POST['articulo'];
 
+        $articulo->sincronizar($args);  
 
-        $titulo = mysqli_real_escape_string( $db,  $_POST['titulo'] );
-        $precio = mysqli_real_escape_string( $db,  $_POST['precio'] );
-        $descripcion = mysqli_real_escape_string( $db,  $_POST['descripcion'] );
-        $tipo = mysqli_real_escape_string( $db,  $_POST['tipo'] );
-        $vendedorId = mysqli_real_escape_string( $db,  $_POST['vendedor'] );
-        $creado = date('Y/m/d');
+        //validación de los datos
+        $errores = $articulo->validar();
 
-        // Asignar files hacia una variable
-        $imagen = $_FILES['imagen'];
+        //subida de archivos y generación de nombre único
+        $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg";
 
-        if(!$titulo) {
-            $errores[] = "Debes añadir un titulo";
+        if($_FILES['articulo']['tmp_name']['imagen']) {
+            $image = Image::make($_FILES['articulo']['tmp_name']['imagen'])->fit(1600,1200); //redimensionar la imagen, o 800*600
+            $articulo->setImagen($nombreImagen);
         }
-
-        if(!$precio) {
-            $errores[] = 'El Precio es Obligatorio';
-        }
-
-        if( strlen( $descripcion ) < 30 ) {
-            $errores[] = 'La descripción es obligatoria y debe tener al menos 50 caracteres';
-        }
-
-        if(!$tipo) {
-            $errores[] = 'El tipo de artículo obligatorio';
-        }
-        
-        if(!$vendedorId) {
-            $errores[] = 'Elige un vendedor';
-        }
-
-        // Validar por tamaño (1mb máximo)
-        $medida = 1000 * 1000;
-        if($imagen['size'] > $medida ) {
-            $errores[] = 'La Imagen es muy pesada';
-        }
-
-
-        // echo "<pre>";
-        // var_dump($errores);
-        // echo "</pre>";
-
-
-        // Revisar que el array de errores este vacio
 
         if(empty($errores)) {
-
-            // Crear carpeta
-            $carpetaImagenes = '../../imagenes/';
-
-            if(!is_dir($carpetaImagenes)) {
-                mkdir($carpetaImagenes);
+            // Almacenar la imagen
+            if($_FILES['articulo']['tmp_name']['imagen']) {
+                $image->save(CARPETA_IMAGENES . $nombreImagen);
             }
 
-            $nombreImagen = '';
-
-            /** SUBIDA DE ARCHIVOS */
-            //falta que se elimine la imagen previa anterior cuando se suba una nueva
-            if($imagen['name']) {
-                // Eliminar la imagen previa
-                unlink($carpetaImagenes . $propiedad['imagen']);
-            
-                // Generar un nombre único y subir la imagen
-                $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg";
-                move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen );
-                
-                // Actualiza la variable para que el preview muestre la imagen nueva
-                $imagenPropiedad = $nombreImagen;
-            } else {
-                $nombreImagen = $propiedad['imagen'];
-            }
-            
-            // Insertar en la base de datos
-            $query = " UPDATE articulos SET titulo = '{$titulo}', precio = '{$precio}', imagen = '{$nombreImagen}', descripcion = '{$descripcion}', tipo = '{$tipo}', vendedor_id = {$vendedorId} WHERE id = {$id} ";
-
-            $resultado = mysqli_query($db, $query);
-
-            if($resultado) {
-                // Redireccionar al usuario.
-                header('Location: /admin?resultado=2');
-            }
+            $articulo->guardar();
         }
-
     }
-
     incluirTemplate('header');
 ?>
 
     <main class="contenedor seccion">
-        <h1>Actualizar Propiedad</h1>
+        <h1>Actualizar Artículo</h1>
 
-        <a href="/admin" class="boton boton-verde">Volver</a>
+        <a href="/admin" class="boton boton-verde">Regresar</a>
 
         <?php foreach($errores as $error): ?>
         <div class="alerta error">
@@ -158,43 +81,8 @@
         <?php endforeach; ?>
 
         <form class="formulario" method="POST" enctype="multipart/form-data">
-            <fieldset>
-                <legend>Información General</legend>
 
-                <label for="titulo">Titulo:</label>
-                <input type="text" id="titulo" name="titulo" placeholder="Título del Artículo" value="<?php echo $titulo; ?>">
-
-                <label for="precio">Precio:</label>
-                <input type="number" id="precio" name="precio" placeholder="Precio del Artículo" value="<?php echo $precio; ?>">
-
-                <label for="imagen">Imagen:</label>
-                <input type="file" id="imagen" accept="image/jpeg, image/png" name="imagen">
-
-                <img src="/imagenes/<?php echo $imagenPropiedad; ?>" class="imagen-small">
-
-                <label for="descripcion">Descripción:</label>
-                <textarea id="descripcion" name="descripcion"><?php echo $descripcion; ?></textarea>
-
-            </fieldset>
-
-            <fieldset>
-                <legend>Información de Artículo</legend>
-
-                <label for="tipo">Tipo:</label>
-                <input type="text" id="tipo" name="tipo" placeholder="Tipo de Artículo" value="<?php echo $tipo; ?>">
-
-            </fieldset>
-
-            <fieldset>
-                <legend>Vendedor</legend>
-
-                <select name="vendedor">
-                    <option value="">-- Seleccione --</option>
-                    <?php while($vendedor =  mysqli_fetch_assoc($resultado) ) : ?>
-                        <option  <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?>   value="<?php echo $vendedor['id']; ?>"> <?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?> </option>
-                    <?php endwhile; ?>
-                </select>
-            </fieldset>
+            <?php include '../../includes/templates/formulario_articulos.php'; ?>
 
             <input type="submit" value="Actualizar Artículo" class="boton boton-verde">
         </form>
