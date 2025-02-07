@@ -8,7 +8,6 @@
         <h2>Artículos que ofrecemos con envío a domicilio</h2>
 
             <?php
-                $limite = 20;
                 include 'includes/templates/articulos.php';
             ?>
 

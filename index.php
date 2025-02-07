@@ -29,7 +29,6 @@
         <h2>Artículos destacados</h2>
 
         <?php
-            $limite = 3;
             include 'includes/templates/articulos.php';
         ?>
 
