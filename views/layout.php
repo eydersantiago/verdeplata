@@ -92,6 +92,9 @@
                 <a href="/articulos"><i class="fas fa-list"></i>Artículos</a>
                 <a href="/ubicanos"><i class="fas fa-blog"></i> Artículos</a>
                 <a href="/contacto"><i class="fas fa-envelope"></i> Contacto</a>
+                <?php if (!$auth): ?>
+                  <a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <?php endif; ?>
             </nav>
         </div>
 

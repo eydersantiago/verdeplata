@@ -65,12 +65,12 @@ class PaginasController {
             $mail = new PHPMailer();
             // configure an SMTP
             $mail->isSMTP();
-            $mail->Host = 'sandbox.smtp.mailtrap.io';
+            $mail->Host = $_ENV['EMAIL_HOST'];
             $mail->SMTPAuth = true;
-            $mail->Username = '3620927a5f0453';
-            $mail->Password = 'ca6720e0ec0050';
+            $mail->Username = $_ENV['EMAIL_USER'];
+            $mail->Password = $_ENV['EMAIL_PASS'];
             $mail->SMTPSecure = 'tls';
-            $mail->Port = 2525;
+            $mail->Port = ENV['EMAIL_PORT'];
         
             $mail->setFrom('correoverdeplata@gmail.com', $respuestas['nombre']);
             $mail->addAddress('correoverdeplata@gmail.com', 'verdeplata.com');
