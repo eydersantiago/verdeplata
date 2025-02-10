@@ -65,15 +65,15 @@ class PaginasController {
             $mail = new PHPMailer();
             // configure an SMTP
             $mail->isSMTP();
-            $mail->Host = 'smtp.mailtrap.io';
+            $mail->Host = 'sandbox.smtp.mailtrap.io';
             $mail->SMTPAuth = true;
-            $mail->Username = 'd24e350850a869';
-            $mail->Password = '84f5068e077a6b';
+            $mail->Username = '3620927a5f0453';
+            $mail->Password = 'ca6720e0ec0050';
             $mail->SMTPSecure = 'tls';
             $mail->Port = 2525;
         
-            $mail->setFrom('admin@bienesraices.com', $respuestas['nombre']);
-            $mail->addAddress('admin@bienesraices.com', 'BienesRaices.com');
+            $mail->setFrom('correoverdeplata@gmail.com', $respuestas['nombre']);
+            $mail->addAddress('correoverdeplata@gmail.com', 'verdeplata.com');
             $mail->Subject = 'Tienes un Nuevo Email';
             // Set HTML 
             $mail->isHTML(TRUE);
@@ -83,15 +83,15 @@ class PaginasController {
             $contenido .= "<p><strong>Has Recibido un email:</strong></p>";
             $contenido .= "<p>Nombre: " . $respuestas['nombre'] . "</p>";
             $contenido .= "<p>Mensaje: " . $respuestas['mensaje'] . "</p>";
-            $contenido .= "<p>Vende o Compra: " . $respuestas['opciones'] . "</p>";
+            $contenido .= "<p>Escoge un plan: " . $respuestas['opciones'] . "</p>";
             $contenido .= "<p>Presupuesto o Precio: $" . $respuestas['presupuesto'] . "</p>";
 
             if($respuestas['contacto'] === 'telefono') {
-                $contenido .= "<p>Eligió ser Contactado por Teléfono:</p>";
+                $contenido .= "<p>Eligió ser Contactado por: Teléfono</p>";
                 $contenido .= "<p>Su teléfono es: " .  $respuestas['telefono'] ." </p>";
                 $contenido .= "<p>En la Fecha y hora: " . $respuestas['fecha'] . " - " . $respuestas['hora']  . " Horas</p>";
             } else {
-                $contenido .= "<p>Eligio ser Contactado por Email:</p>";
+                $contenido .= "<p>Eligio ser Contactado por: Email</p>";
                 $contenido .= "<p>Su Email  es: " .  $respuestas['email'] ." </p>";
             }
 
