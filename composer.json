@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "intervention/image": "2.7",
+        "intervention/image": "3.11.1",
         "gumlet/php-image-resize": "^2.0"
     },
     "autoload": {

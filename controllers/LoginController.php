@@ -17,23 +17,23 @@ class LoginController {
             $errores = $auth->validar();
         
             if(empty($errores)) {
-
+                // Asigna el resultado de la consulta a la variable $resultado
                 $resultado = $auth->existeUsuario();
-     
-                
-                if( !$resultado ) {
+    
+                // Ahora, como $resultado es un arreglo, revisa el primer elemento
+                if(!$resultado[0]) {
                     $errores = Admin::getErrores();
                 } else {
-
-                    $auth->comprobarPassword($resultado);
-
-                    if($auth->autenticado) {
-                       $auth->autenticar();
+                    // Pasa el objeto mysqli_result, que está en el índice 1, a la función verificarPassword
+                    if($auth->verificarPassword($resultado[1])) {
+                        header('Location: /admin');
+                        exit;
                     } else {
-                        $errores =Admin::getErrores();
+                        $errores = Admin::getErrores();
                     }
                 }
             }
+        
         }
 
         $router->render('auth/login', [
