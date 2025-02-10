@@ -1,1 +1,28 @@
-/vendor/
+# Directorio de dependencias de Composer (se genera automáticamente)
+vendor/
+
+# Archivos y carpetas de configuración del IDE (por ejemplo, PhpStorm, VSCode, etc.)
+.idea/
+.vscode/
+
+# Archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de log
+*.log
+
+# Carpetas de caché o temporales
+cache/
+tmp/
+
+# Archivo de variables de entorno (si lo usas)
+.env
+
+# Imágenes subidas dinámicamente (normalmente no se versionan)
+# Esto ignora todo el contenido de la carpeta "imagenes", pero se incluye un .gitkeep si lo necesitas para mantener la estructura
+imagenes/*
+!imagenes/.gitkeep
+
+public/build/
+
