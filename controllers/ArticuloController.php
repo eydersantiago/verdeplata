@@ -28,49 +28,52 @@ class ArticuloController  {
         $errores = Articulo::getErrores();
         $articulo = new Articulo;
         $vendedores = Vendedor::all();
-
-        // Ejecutar el código después de que el usuario envia el formulario
+    
+        // Ejecutar el código después de que el usuario envía el formulario
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+    
             // Crear una nueva instancia con los datos del formulario
             $articulo = new Articulo($_POST['articulo']);
-
+    
             // Generar un nombre único para la imagen
             $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-
-
-            // Si se subió una imagen, asignar el nombre único al objeto
+    
+            // Si se subió una imagen, crear el objeto Image y asignar el nombre único al objeto
             if($_FILES['articulo']['tmp_name']['imagen']) {
+                $image = Image::make($_FILES['articulo']['tmp_name']['imagen'])->fit(1600, 1200);
                 $articulo->setImagen($nombreImagen);
             }
-
+    
             // Validar
             $errores = $articulo->validar();
             if(empty($errores)) {
-
-                // Crear la carpeta para subir imagenes
+    
+                // Crear la carpeta para subir imágenes si no existe
                 if(!is_dir(CARPETA_IMAGENES)) {
                     mkdir(CARPETA_IMAGENES);
                 }
-
-                // Guarda la imagen en el servidor
-                $image->save(CARPETA_IMAGENES . $nombreImagen);
-
+    
+                // Guarda la imagen en el servidor solo si se subió
+                if(isset($image)) {
+                    $image->save(CARPETA_IMAGENES . $nombreImagen);
+                }
+    
                 // Guarda en la base de datos
                 $resultado = $articulo->guardar();
-
+    
                 if($resultado) {
                     header('location: /articulos');
                 }
             }
         }
-
+    
         $router->render('articulos/crear', [
             'errores' => $errores,
             'articulo' => $articulo,
             'vendedores' => $vendedores
         ]);
     }
+    
 
     public static function actualizar(Router $router) {
 
