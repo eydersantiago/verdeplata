@@ -70,7 +70,7 @@ class PaginasController {
             $mail->Username = $_ENV['EMAIL_USER'];
             $mail->Password = $_ENV['EMAIL_PASS'];
             $mail->SMTPSecure = 'tls';
-            $mail->Port = ENV['EMAIL_PORT'];
+            $mail->Port = $ENV['EMAIL_PORT'];
         
             $mail->setFrom('correoverdeplata@gmail.com', $respuestas['nombre']);
             $mail->addAddress('correoverdeplata@gmail.com', 'verdeplata.com');
